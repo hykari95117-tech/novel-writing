@@ -51,6 +51,16 @@ function clearAll() {
 }
 
 function saveText() {
+    // PC, mobile 구분
+    const userAgent = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if(userAgent) {
+        alert("핸드폰");
+        return;
+    } else {
+        alert("PC");
+        return;
+    }
+
     let content = '';
     const titles = ['제목', '기 (起) - 서론', '승 (承) - 전개', '전 (轉) - 위기', '결 (結) - 결말'];
 
