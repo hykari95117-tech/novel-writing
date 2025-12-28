@@ -78,25 +78,26 @@ function saveText() {
         return;
     }
 
+    const date = new Date();
+    const filename = `소설_${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}.txt`;
     // PC, mobile 구분
     const userAgent = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if(userAgent) {
-        saveTextInMobile(content);
+        saveTextInMobile(content, filename);
     } else {
-        saveTextInMobile(content);
-        // saveTextInPc(content);
+        saveTextInPc(content, filename);
     }
 }
 
 // mobile 환경에서 저장
-function saveTextInMobile(content) {
+function saveTextInMobile(content, filename) {
     /**
      * [docs 기준]
      * - emailjs.send(serviceID, templateID, templateParams, options);
      * - options는 emailjs.init에서 설정한 option을 뒤집어 쓰고 싶을 때 사용
      */
     const templateParams = {
-        title : document.querySelector(".title_input").value, // 메일 발송을 위한 메일 제목 추출
+        title : filename,
         message : content
     }
     // emailjs.send 함수는 Promise를 반환한다.
@@ -113,11 +114,9 @@ function saveTextInMobile(content) {
 }
 
 // PC 환경에서 저장
-function saveTextInPc(content) {
+function saveTextInPc(content, filename) {
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const link = document.createElement('a');
-    const date = new Date();
-    const filename = `소설_${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}.txt`;
 
     link.href = URL.createObjectURL(blob);
     link.download = filename;
