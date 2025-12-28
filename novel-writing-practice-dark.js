@@ -52,6 +52,7 @@ function updateTotalCount() {
     }
 }
 
+// 전체 지우기 버튼
 function clearAll() {
     if (confirm('정말로 모든 내용을 지우시겠습니까?')) {
         for (let i = 0; i <= 4; i++) {
@@ -61,6 +62,12 @@ function clearAll() {
     }
 }
 
+// 임시 저장 버튼
+function saveTextTmp() {
+    alert("임시 저장, 로컬 스토리지? 핸드폰일 때는?")
+}
+
+// 텍스트 저장 버튼
 function saveText() {
     let content = '';
     const titles = ['제목', '기 (起) - 서론', '승 (承) - 전개', '전 (轉) - 위기', '결 (結) - 결말'];
