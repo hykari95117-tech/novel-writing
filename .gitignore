@@ -1,3 +1,6 @@
-/save
-.env
+node_modules/
+dist/
+save/
 .github/
+.env
+*.js.map
