@@ -204,9 +204,16 @@ body.dark-mode textarea:focus {
 
 .button-group {
     display: flex;
-    gap: 15px;
-    margin-top: 30px;
+    flex-direction: column;
+    gap: 10px;
+
 }
+
+.top-buttons, .bottom-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 
 button {
     flex: 1;
@@ -248,6 +255,17 @@ button {
 
 .tmp-save-btn:hover {
     background: #2b2ea6;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+.tmp-call-btn {
+    background: #d809a4;
+    color: white;
+}
+
+.tmp-call-btn:hover {
+    background: #ac268b;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
 }

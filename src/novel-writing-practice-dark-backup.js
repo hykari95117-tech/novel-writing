@@ -9,6 +9,14 @@
     });
 })();
 
+// 로컬스토리지 존재 여부, 즉시 실행 함수 형태
+// 로컬스토리지를 지원하지 않는 브라우저는 [임시저장], [불러오기] 버튼 숨김
+(function() {
+    if(!localStorage || !document?.querySelector(".top-buttons")) {
+        document.querySelector(".top-buttons").style.display = "none";
+    }
+})();
+
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     const modeText = document.getElementById('modeText');
@@ -62,24 +70,30 @@ function clearAll() {
     }
 }
 
-// 임시 저장 버튼
+// 임시저장 버튼
 function saveTextTmp() {
-    alert("임시 저장, 로컬 스토리지? 핸드폰일 때는?")
+    const {content, contentArr} = extractAllText();
+    if (!content.trim()) {
+        alert('저장할 내용이 없습니다.');
+        return;
+    }
+    for (let i = 0; i < contentArr.length; i++) {
+        const content = contentArr[i];
+        localStorage.setItem(`tempSave${i}`, content);
+    }
+}
+
+// 불러오기 버튼
+function callTextTmp() {
+    for (let i = 0; i <= 4; i++) {
+        const element = document.getElementById(`section${i}`);
+        element.value = localStorage.getItem(`tempSave${i}`);
+    }
 }
 
 // 텍스트 저장 버튼
 function saveText() {
-    let content = '';
-    const titles = ['제목', '기 (起) - 서론', '승 (承) - 전개', '전 (轉) - 위기', '결 (結) - 결말'];
-
-    for (let i = 0; i <= 4; i++) {
-        const element = document.getElementById(`section${i}`);
-        const text = element.value;
-        if (text.trim()) {
-            content += `=== ${titles[i]} ===\n\n${text}\n\n\n`;
-        }
-    }
-
+    const {content} = extractAllText();
     if (!content.trim()) {
         alert('저장할 내용이 없습니다.');
         return;
@@ -94,6 +108,23 @@ function saveText() {
     } else {
         saveTextInPc(content, filename);
     }
+}
+
+// 현재 작성한 내용 추출
+function extractAllText() {
+    let content = '';
+    let contentArr = [];
+    const titles = ['제목', '기 (起) - 서론', '승 (承) - 전개', '전 (轉) - 위기', '결 (結) - 결말'];
+
+    for (let i = 0; i <= 4; i++) {
+        const element = document.getElementById(`section${i}`);
+        const text = element.value;
+        if (text.trim()) {
+            content += `=== ${titles[i]} ===\n\n${text}\n\n\n`;
+            contentArr[i] = text;
+        }
+    }
+    return {content, contentArr};
 }
 
 // mobile 환경에서 저장
