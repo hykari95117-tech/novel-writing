@@ -1,7 +1,16 @@
+// .env 파일 가져오기
+// require('dotenv').config();
+
 // emailjs 초기 설정, 즉시 실행 함수 형태
+/**
+ * cf)
+ * process = Node.js 전역 객체
+ * env = process 객체의 속성
+ * EMAILJS_YOUR_PUBLIC_KEY = .env 파일에서 정의한 변수명
+ */
 (function(){
     emailjs.init({
-    publicKey: "PUBLICKEY",
+    publicKey: "process.env.EMAILJS_YOUR_PUBLIC_KEY",
     blockHeadless: true,
     limitRate: { 
         throttle: 5000 // 5초에 한 번만 메일 발송 허용, 이메일 전송을 너무 자주 못 하게 막는다.
@@ -71,6 +80,7 @@ function clearAll() {
 }
 
 // 임시저장 버튼
+// TODO n분 단위로 자동 임시저장 되는 기능
 function saveTextTmp() {
     const {content, contentArr} = extractAllText();
     if (!content.trim()) {
@@ -81,6 +91,7 @@ function saveTextTmp() {
         const content = contentArr[i];
         localStorage.setItem(`tempSave${i}`, content);
     }
+    alert('저장 완료');
 }
 
 // 불러오기 버튼
@@ -89,9 +100,10 @@ function callTextTmp() {
         const element = document.getElementById(`section${i}`);
         element.value = localStorage.getItem(`tempSave${i}`);
     }
+    // TODO 불러오기 했을 때 글자수 카운트 안 됨
 }
 
-// 텍스트 저장 버튼
+// 텍스트 보내기 버튼
 function saveText() {
     const {content} = extractAllText();
     if (!content.trim()) {
@@ -108,6 +120,7 @@ function saveText() {
     } else {
         saveTextInPc(content, filename);
     }
+    alert('완료');
 }
 
 // 현재 작성한 내용 추출
@@ -159,8 +172,6 @@ function saveTextInPc(content, filename) {
     link.href = URL.createObjectURL(blob);
     link.download = filename;
     link.click();
-
-    alert('저장 완료');
 }
 
 // 각 섹션에 이벤트 리스너 추가
